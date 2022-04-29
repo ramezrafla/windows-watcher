@@ -2,14 +2,6 @@
 
 # Windows Watcher
 
-#### Warning: Pre-release. Not suited for production.
-
-[![Dependency status](https://img.shields.io/david/stephan-nordnes-eriksen/windows-watcher.svg?style=flat)](https://david-dm.org/stephan-nordnes-eriksen/windows-watcher)
-[![devDependency Status](https://img.shields.io/david/dev/stephan-nordnes-eriksen/windows-watcher.svg?style=flat)](https://david-dm.org/stephan-nordnes-eriksen/windows-watcher#info=devDependencies)
-[![Build Status](https://img.shields.io/travis/stephan-nordnes-eriksen/windows-watcher.svg?style=flat&branch=master)](https://travis-ci.org/stephan-nordnes-eriksen/windows-watcher)
-
-[![NPM](https://nodei.co/npm/windows-watcher.svg?style=flat)](https://npmjs.org/package/windows-watcher)
-
 A Windows file system watcher utilizing the native FileSystemWatcher api for file events.
 
 ## Installation
@@ -34,8 +26,11 @@ callback = function(event){
     case 'Deleted':
       console.log("File Deleted: " + data[1]);
       break;
-    case 'Rename':
-      console.log("File Rename from: " + data[1] + " to " + data[2]);
+    case 'Renamed':
+      console.log("File Renamed: " + data[1] + " --> " + data[2]);
+      break;
+    case 'Ready':
+      console.log("Ready)
   }
 }
 watcher.watch("C:/", callback);
@@ -47,8 +42,6 @@ watcher.watch("F:/", callback);
 watcher.watch("G:/", callback);
 watcher.watch("H:/", callback);
 watcher.watch("Z:/path/to/file.extension", callback);
-//Ohh yeah! Performance is not an issue.
-
 //....
 watcher.unwatch("C:/");
 watcher.unwatch("H:/");
@@ -56,22 +49,9 @@ watcher.unwatch("H:/");
 ```
 
 
-### Watching in Electron, and the like
-Windows Watcher uses [edge.js](http://tjanczuk.github.io/edge/) to run native code. Because edge.js needs special compilation in certain contexts, such as in [Electron](http://electron.atom.io/), you can provide your own electron instance. Windows Watcher will fallback to the standard [edge.js](http://tjanczuk.github.io/edge/) package if nothing is provided.
-
-```javascript
-WindowsWatcher = require("windows-watcher");
-edge = require("electron-edge2");
-watcher = new WindowsWatcher(edge);
-watcher.watch("C:/", callback);
-//....
-watcher.unwatch("C:/");
-```
-
-
 ### Advanced Watching Setup
 
-#### Disable Recursive Listening:
+#### Disable Recursive Listening
 It is possible to make the watcher not care about sub-folders. The following script will yield resulst for files residing within `C:/` only. Changes to files like `C:/Users/whatever.txt` will not give a callback.
 
 ```javascript

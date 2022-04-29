@@ -14,8 +14,8 @@ const callback = function(event){
     case 'Deleted':
       console.log("File Deleted: " + event[1])
       break
-    case 'Rename':
-      console.log("File Rename from: " + event[1] + " to " + event[2])
+    case 'Renamed':
+      console.log("File Renamed: " + event[1] + " --> " + event[2])
       break
     case 'Ready':
       console.log("Received \"Ready\" signal")
