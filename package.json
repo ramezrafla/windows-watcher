@@ -12,7 +12,7 @@
     "url": "https://github.com/stephan-nordnes-eriksen/windows-watcher.git"
   },
   "scripts": {
-    "test": "node test.index.mjs",
+    "test": "node test.index.mjs"
   },
   "dependencies": {
     "edge-js": "github:ramezrafla/edge-js"
