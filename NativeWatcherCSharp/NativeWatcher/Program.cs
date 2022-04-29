@@ -11,8 +11,6 @@ namespace NativeWatcher
 {
     public class Watcher
     {
-        //public static System.IO.FileSystemWatcher theWatcher;//Possibly add hash here to enable listening to multiple folders.
-
         public static Dictionary<string, System.IO.FileSystemWatcher> watchers = new Dictionary<string, FileSystemWatcher>();
     }   
 
@@ -21,14 +19,15 @@ namespace NativeWatcher
         public async Task<object> Invoke(dynamic input)
         {
             string path = (string)input.path;
+            bool debug = (bool)input.debug;
             if ((bool)input.stopping)
             {
                 if ((bool)input.stoppingAll)
                 {
                     foreach (KeyValuePair<string, System.IO.FileSystemWatcher> entry in Watcher.watchers)
-	                {
+	                  {
                         entry.Value.EnableRaisingEvents = false;
-	                }
+	                  }
                     Watcher.watchers.Clear();
                 }
                 else
@@ -40,7 +39,6 @@ namespace NativeWatcher
                         Watcher.watchers.Remove(path);
                     }
                 }
-                //Watcher.theWatcher.EnableRaisingEvents = false;
                 return false;
             }
 
@@ -53,36 +51,35 @@ namespace NativeWatcher
             var responseCallback = (System.Func<object, Task<object>>)input.responseCallback;
 
             Watcher.watchers[path] = new System.IO.FileSystemWatcher();
-            Watcher.watchers[path].NotifyFilter = System.IO.NotifyFilters.LastAccess | System.IO.NotifyFilters.LastWrite
-            | System.IO.NotifyFilters.FileName | System.IO.NotifyFilters.DirectoryName;
+            Watcher.watchers[path].NotifyFilter = System.IO.NotifyFilters.LastAccess | System.IO.NotifyFilters.LastWrite | System.IO.NotifyFilters.FileName | System.IO.NotifyFilters.DirectoryName | System.IO.NotifyFilters.Attributes | System.IO.NotifyFilters.Security | System.IO.NotifyFilters.Size;
             Watcher.watchers[path].IncludeSubdirectories = (bool)input.recursive;
             Watcher.watchers[path].Path = (string)input.path;
-            //System.Console.WriteLine("Path:");
-            //System.Console.WriteLine(Watcher.watchers[path].Path);
+            if (debug) System.Console.WriteLine("Path: " + Watcher.watchers[path].Path);
             Watcher.watchers[path].Filter = (string)input.filter;
             Watcher.watchers[path].Changed += delegate(object sender, System.IO.FileSystemEventArgs e)
             {
-               // System.Console.WriteLine("Changed" + Watcher.watchers.Count);
+                if (debug) System.Console.WriteLine("Changed" + Watcher.watchers.Count);
                 responseCallback(new string[] { "Changed", e.FullPath });
             };
             Watcher.watchers[path].Created += delegate(object sender, System.IO.FileSystemEventArgs e)
             {
-               // System.Console.WriteLine("Created" + Watcher.watchers.Count);
+                if (debug) System.Console.WriteLine("Created" + Watcher.watchers.Count);
                 responseCallback(new string[] { "Created", e.FullPath });
             };
             Watcher.watchers[path].Deleted += delegate(object sender, System.IO.FileSystemEventArgs e)
             {
-               // System.Console.WriteLine("Deleted"+ Watcher.watchers.Count);
+                if (debug) System.Console.WriteLine("Deleted"+ Watcher.watchers.Count);
                 responseCallback(new string[] { "Deleted", e.FullPath });
             };
             Watcher.watchers[path].Renamed += delegate(object sender, System.IO.RenamedEventArgs e)
             {
-               // System.Console.WriteLine("Rename" + Watcher.watchers.Count);
+                if (debug) System.Console.WriteLine("Rename" + Watcher.watchers.Count);
                 responseCallback(new string[] { "Rename", e.OldFullPath, e.FullPath });
             };
 
             // Begin watching
             Watcher.watchers[path].EnableRaisingEvents = true;
+            responseCallback(new string[] { "Ready" });
 
             return true;
         }
