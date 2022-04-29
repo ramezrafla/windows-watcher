@@ -1,11 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using System.Security.Permissions;
-using System.Collections;
 
 namespace NativeWatcher
 {
@@ -69,7 +68,7 @@ namespace NativeWatcher
             };
             Watcher.watchers[path].Deleted += delegate(object sender, System.IO.FileSystemEventArgs e)
             {
-                if (debug) System.Console.WriteLine("Deleted "+ Watcher.watchers.Count);
+                if (debug) System.Console.WriteLine("Deleted " + Watcher.watchers.Count);
                 responseCallback(new string[] { "Deleted", e.FullPath });
             };
             Watcher.watchers[path].Renamed += delegate(object sender, System.IO.RenamedEventArgs e)
