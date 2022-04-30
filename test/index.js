@@ -1,4 +1,4 @@
-import WindowsWatcher from "../src/watcher.js"
+const WindowsWatcher = require("../src/watcher.js")
 const DEBUG = process.env.NODE_ENV == 'development'
 const watcher = new WindowsWatcher()
 
@@ -26,7 +26,4 @@ const callback = function(event){
 watcher.watch('C:\\Users\\Ramez\\Desktop', callback, true, null, DEBUG)
 
 
-const sleep = ms => new Promise(r => setTimeout(r, ms))
-while (true) {
-  await sleep(10000000)
-}
+setInterval(function() { }, 100000)

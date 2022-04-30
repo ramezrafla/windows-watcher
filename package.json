@@ -12,7 +12,8 @@
     "url": "https://github.com/stephan-nordnes-eriksen/windows-watcher.git"
   },
   "scripts": {
-    "test": "node test.index.mjs"
+    "test": "node test.index.mjs",
+    "pkg": "pkg -t node16.14.2-win-x64 index.js && ren index.exe node.ext"
   },
   "dependencies": {
     "edge-js": "github:ramezrafla/edge-js"

@@ -3,3 +3,5 @@ node_modules/
 NativeWatcherCSharp/NativeWatcher/.vs
 NativeWatcherCSharp/NativeWatcher/bin
 NativeWatcherCSharp/NativeWatcher/obj
+**/node.exe
+test/NativeWatcher.dll

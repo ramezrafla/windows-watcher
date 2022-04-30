@@ -8,6 +8,17 @@ A Windows file system watcher utilizing the native FileSystemWatcher api for fil
 
     npm install windows-watcher
 
+## Pkg
+
+Use pre-built binaries from here: https://github.com/vercel/pkg-fetch/releases
+
+`sh
+pkg -t node16.14.2-win-x64 index.js
+`
+Copy NativeWatcher.dll over
+Rename index.exe to node.exe
+
+
 ## Usage Example
 
 ### Watching Directories and files
