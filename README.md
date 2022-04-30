@@ -83,23 +83,6 @@ recursive = true; //or false. Whatever tickles your fancy.
 watcher.watch("C:/",callback, recursive, "*.ogg");
 ```
 
-To do your own filtering in JavaScript.
-
-```javascript
-WindowsWatcher = require("windows-watcher");
-watcher = new WindowsWatcher();
-callback = new function(data){
-  if(data[1].match(/.*\.png|.*\.jpg|.*\.jpeg|.q\.tiff|.*\.gif/)){
-    console.log("I care about you image! " + data[1] + ". You were " + data[0]);
-  }
-  else{
-    console.log("I am ignoring you weird file " + data[1])
-  }
-}
-recursive = true; //or false. Whatever tickles your fancy.
-watcher.watch("C:/",callback);
-```
-
 ## License
 
 The MIT License (MIT)
